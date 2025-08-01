@@ -17,12 +17,14 @@ import authRoutes from "./routes/auth.route.js";
 import songRoutes from "./routes/song.route.js";
 import statRoutes from "./routes/stat.route.js";
 import userRoutes from "./routes/user.route.js";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5001;
 const app = express();  // todo: utilise socket.io
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Socket.io Resolve
 const server = createServer(app);
@@ -69,10 +71,16 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 
+// If in production phase, then make the dist folder in frontend into static assets
+// This allows the frontend to be joined with the backend under the same domain
+// Meaning client and server both under same domain
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
+    // If any routes aside from:
+    // "/api/auth" and "/api/messages" visited, then go to react application via index.html
     app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "../../frontend/dist/index.html"));
+        res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
     });
 }
 
