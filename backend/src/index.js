@@ -48,7 +48,7 @@ app.use(fileupload({
 }));
 
 // cron jobs (to handle deletion of tmp every set time interval)
-const tempDir = path.join(process.cwd(), "tmp");
+const tempDir = path.join(__dirname, "../tmp");
 cron.schedule("0 * * * *", () => {  // delete every hr
     if (fs.existsSync(tempDir)) {
         fs.readdir(tempDir, (err, files) => {
