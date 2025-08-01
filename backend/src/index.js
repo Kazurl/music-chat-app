@@ -40,7 +40,7 @@ app.use(cookieParser());
 app.use(clerkMiddleware());  // this will add auth to req obj => req.auth.userId
 app.use(fileupload({
     useTempFiles: true,
-    tempFileDir: path.join(__dirname, "tmp"),  // hold img uploads till uploaded to cloudinary
+    tempFileDir: path.join(__dirname, "../tmp"),  // hold img uploads till uploaded to cloudinary
     createParentPath: true,
     limits: {
         fileSize: 10 * 1024 * 1024  // max size of 10MB per upload
@@ -86,7 +86,7 @@ if (process.env.NODE_ENV === "production") {
 
 // error handler middleware
 app.use((err, req, res, next) => {
-    res.status(500).json({ success: false, messge: process.env.NODE_ENV === "production" ? "Internal Server Error" : err.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === "production" ? "Internal Server Error" : err.message });
 })
 
 server.listen(PORT, () => {
