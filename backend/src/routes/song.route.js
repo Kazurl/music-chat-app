@@ -5,7 +5,6 @@ import {
     getFeaturedSongs,
     getPersonalisedSongs,
     getTrendingSongs,
-    getSongById,
 } from "../controllers/song.controller.js";
 import {
     protectRoute,
@@ -20,6 +19,5 @@ router.get("/personalised-songs", getPersonalisedSongs);
 router.get("/trending", getTrendingSongs);
 
 // todo: search song by name so we can fetch using search bar
-//router.get("/:id", getSongById);
 
 export default router;

@@ -6,13 +6,11 @@ import {
 import {
     getAllUsers,
     getMessages,
-    sendMessage,
 } from "../controllers/user.controller.js";
 
 const router = Router();
 
 router.get("/", protectRoute, getAllUsers);
 router.get("/messages/:id", protectRoute, getMessages);
-router.post("/send/:id", protectRoute, sendMessage);
 
 export default router;
