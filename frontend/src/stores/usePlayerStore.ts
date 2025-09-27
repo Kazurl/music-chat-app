@@ -16,7 +16,7 @@ interface PlayerStore {
     playPrevious: () => void;
 };
 
-export const usePlayerStore = create<PlayerStore>((set, get) => ({
+export const usePlayerStore = create<PlayerStore>((set: any, get: any) => ({
     currentSong: null,
     isPlaying: false,
     queue: [],
@@ -62,7 +62,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
         }
 
 
-        const songIndex = get().queue.findIndex(s => s._id === song._id);
+        const songIndex = get().queue.findIndex((s: Song) => s._id === song._id);
         set({
             currentSong: song,
             currentIndex: songIndex !== -1 ? songIndex : get().currentIndex,
