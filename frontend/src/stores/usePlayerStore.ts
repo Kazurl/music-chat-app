@@ -1,4 +1,4 @@
-import { create, StateCreator } from "zustand";
+import { create } from "zustand";
 import { Song } from "@/types";
 import { useChatStore } from "./useChatStore";
 
@@ -16,7 +16,7 @@ interface PlayerStore {
     playPrevious: () => void;
 };
 
-export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore>['set'], get: StateCreator<PlayerStore>['get']) => ({
+export const usePlayerStore = create<PlayerStore>((set, get) => ({
     currentSong: null,
     isPlaying: false,
     queue: [],
@@ -36,9 +36,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
         const song = songs[startIndex];
 
         const socket = useChatStore.getState().socket;
-        if (socket.auth) {
+        if (socket && socket.auth) {
             socket.emit("updateActivity", {
-                userId: socket.auth.userId,
+                userId: (socket.auth as { userId: string }).userId,
                 activity: `Playing ${song.title} by ${song.artist}`
             });
         }
@@ -54,9 +54,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
         if (!song) return;
     
         const socket = useChatStore.getState().socket;
-        if (socket.auth) {
+        if (socket && socket.auth) {
             socket.emit("updateActivity", {
-                userId: socket.auth.userId,
+                userId: (socket.auth as { userId: string }).userId,
                 activity: `Playing ${song.title} by ${song.artist}`
             });
         }
@@ -76,9 +76,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
 
         const currentSong = get().currentSong;
         const socket = useChatStore.getState().socket;
-        if (socket.auth) {
+        if (socket && socket.auth) {
             socket.emit("updateActivity", {
-                userId: socket.auth.userId,
+                userId: (socket.auth as { userId: string }).userId,
                 activity: 
                     willStartPlaying && currentSong ? `Playing ${currentSong.title} by ${currentSong.artist}` : "Idle"
             });
@@ -95,9 +95,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
             const nextSong = queue[nextIndex];
 
             const socket = useChatStore.getState().socket;
-            if (socket.auth) {
+            if (socket && socket.auth) {
                 socket.emit("updateActivity", {
-                    userId: socket.auth.userId,
+                    userId: (socket.auth as { userId: string }).userId,
                     activity: `Playing ${nextSong.title} by ${nextSong.artist}`
                 });
             }
@@ -112,9 +112,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
             });
 
             const socket = useChatStore.getState().socket;
-            if (socket.auth) {
+            if (socket && socket.auth) {
                 socket.emit("updateActivity", {
-                    userId: socket.auth.userId,
+                    userId: (socket.auth as { userId: string }).userId,
                     activity: "Idle"
                 });
             }
@@ -127,9 +127,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
             const prevSong = queue[prevIndex];
 
             const socket = useChatStore.getState().socket;
-            if (socket.auth) {
+            if (socket && socket.auth) {
                 socket.emit("updateActivity", {
-                    userId: socket.auth.userId,
+                    userId: (socket.auth as { userId: string }).userId,
                     activity: `Playing ${prevSong.title} by ${prevSong.artist}`
                 });
             }
@@ -148,9 +148,9 @@ export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore
             });
             
             const socket = useChatStore.getState().socket;
-            if (socket.auth) {
+            if (socket && socket.auth) {
                 socket.emit("updateActivity", {
-                    userId: socket.auth.userId,
+                    userId: (socket.auth as { userId: string }).userId,
                     activity: `Playing ${prevSong.title} by ${prevSong.artist}`
                 });
             }

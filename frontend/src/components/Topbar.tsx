@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils"
 import SignInOAuthButtons from "./SignInOAuthButtons";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button-variants";
 
 const Topbar = () => {
     const { isAdmin } = useAuthStore();

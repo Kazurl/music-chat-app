@@ -2,7 +2,7 @@ import { SignedIn } from "@clerk/clerk-react";
 import { HomeIcon, Library, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button-variants"
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import PlaylistSkeleton from "@/components/skeletons/PlaylistSkeleton";
