@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
+import { toast } from "react-hot-toast";
 
 interface AuthStore {
     isAdmin: boolean;
@@ -20,8 +21,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
         try {
             const res = await axiosInstance.get("/admin/check");
             set({ isAdmin: res.data.admin });
-        } catch (error: any) {
-            set({ isAdmin: false, error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ isAdmin: false, error: errorMessage });
+            toast.error(errorMessage);
         } finally {
             set({ isLoading: false });
         }

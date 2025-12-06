@@ -49,8 +49,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get("/albums");
             if (res.data) set({ albums: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -61,8 +66,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get(`/albums/${id}`);
             if (res.data) set({ currentAlbum: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         }finally {
             set({ isLoading: false });
         }
@@ -73,8 +83,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get(`/songs`);
             if (res.data) set({songs: res.data});
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -85,8 +100,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get(`/songs/${id}`);
             if (res.data) set({ currentSong: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -112,9 +132,14 @@ export const useMusicStore = create<MusicStore>((set) => ({
                 ),
             }));
             toast.success("Successfully deleted album");
-        } catch (error: any) {
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
             console.log("Error in deleteAlbum useMusicStore", error);
-            set({ error: error.response.data.message });
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -128,9 +153,14 @@ export const useMusicStore = create<MusicStore>((set) => ({
                 songs: state.songs.filter((song) => song._id !== id)
             }));
             toast.success("Successfully deleted song");
-        } catch (error: any) {
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
             console.log("Error in deleteSong useMusicStore", error);
-            set({ error: error.response.data.message });
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -141,8 +171,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get("/songs/personalised-songs");
             if (res.data) set({ personalizedSongs: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -153,8 +188,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get("/songs/featured");
             if (res.data) set({ featuredSongs: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -165,8 +205,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         try {
             const res = await axiosInstance.get("/songs/trending");
             if (res.data) set({ trendingSongs: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -177,8 +222,12 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		try {
 			const res = await axiosInstance.get("/stats");
             if (res.data) set({ stats: res.data });
-		} catch (error: any) {
-			set({ error: error.message });
+		} catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'message' in error) {
+                errorMessage = (error as { message: string }).message;
+            }
+			set({ error: errorMessage });
 		} finally {
 			set({ isLoading: false });
 		}

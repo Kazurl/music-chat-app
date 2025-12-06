@@ -23,20 +23,30 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
                 // we want to try to update token in Authorisation headers when fetch from backend using axios
                 const token = await getToken();
                 updateApiToken(token);
-                if (token) {
-                    await checkAdminStatus();
-                    // init socket
-                    if (userId) initSocket(userId);
-                }
             } catch (error) {
                 updateApiToken(null);
                 console.log("Error in auth provider", error);
-            } finally {
-                setLoading(false);
             }
         };
 
-        initAuth();
+        const checkStatusAndInitSocket = async () => {
+            try {
+                if (userId) {
+                    await checkAdminStatus();
+                    initSocket(userId);
+                }
+            } catch (error) {
+                console.log("Error checking admin status or initializing socket", error);
+            }
+        }
+
+        const run = async () => {
+            await initAuth();
+            await checkStatusAndInitSocket();
+            setLoading(false);
+        }
+
+        run();
 
         // clean up (i.e socket) after close browser
         return () => {

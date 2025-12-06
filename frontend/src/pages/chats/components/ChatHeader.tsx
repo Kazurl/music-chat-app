@@ -12,6 +12,11 @@ const ChatHeader = () => {
     } = useChatStore();
 
     useEffect(() => {
+        const handleKeyDownCloseChat = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setSelectedUser(null);
+            }
+        };
         // add event listener when component mounts
         document.addEventListener("keydown", handleKeyDownCloseChat);
 
@@ -19,13 +24,7 @@ const ChatHeader = () => {
         return () => {
             document.removeEventListener("keydown", handleKeyDownCloseChat);
         }
-    }, []);
-
-    const handleKeyDownCloseChat = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-            setSelectedUser(null);
-        }
-    };
+    }, [setSelectedUser]);
 
     if (!selectedUser) return;
 

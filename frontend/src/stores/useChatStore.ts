@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 
 import { Message, User } from "@/types";
@@ -13,7 +13,7 @@ interface ChatStore {
     selectedUser: User | null;
     isConnected: boolean;
     onlineUsers: Set<string>;
-    socket: any;
+    socket: Socket | null;
     userActivities: Map<string, string>;
 
     fetchUsers: () => Promise<void>;
@@ -47,10 +47,15 @@ export const useChatStore = create<ChatStore> ((set, get) => ({
     fetchUsers: async () => {
         set({ isLoading: true, error: null });
         try {
-            const res = await axiosInstance.get("/users");
-            set({ users: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+            await axiosInstance.get("/users");
+            // set({ users: res.data });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }
@@ -128,8 +133,13 @@ export const useChatStore = create<ChatStore> ((set, get) => ({
         try {
             const res = await axiosInstance.get(`/users/messages/${userId}`);
             set({ messages: res.data });
-        } catch (error: any) {
-            set({ error: error.response.data.message });
+        } catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const response = (error as { response: { data: { message: string } } }).response;
+                errorMessage = response.data.message;
+            }
+            set({ error: errorMessage });
         } finally {
             set({ isLoading: false });
         }

@@ -81,8 +81,12 @@ const AddSongDialog = () => {
 				image: null,
 			});
 			toast.success("Song added successfully");
-		} catch (error: any) {
-			toast.error("Failed to add song: " + error.message);
+		} catch (error: unknown) {
+            let errorMessage = "An error occurred";
+            if (typeof error === 'object' && error !== null && 'message' in error) {
+                errorMessage = (error as { message: string }).message;
+            }
+			toast.error("Failed to add song: " + errorMessage);
 		} finally {
 			setIsLoading(false);
 		}

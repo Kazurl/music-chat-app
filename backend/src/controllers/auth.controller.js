@@ -146,20 +146,18 @@ import { User } from "../models/user.model.js";
 
 export const callback = async (req, res, next) => {
     try {
-        const { id, firstName, lastName, imageUrl } = req.body;  // info sent by clerk
-        // check if user exists
-        const user = await User.findOne({ clerkId: id });
+        const { id, first_name, last_name, image_url } = req.body.data; // info sent by clerk
 
-        if (!user) {
-            // means can sign up
-            await User.create({
-                clerkId: id,
-                fullName: `${firstName || ""} ${lastName || ""}`.trim(),
-                imageUrl,
-            });
-        }
+        const user = await User.findOneAndUpdate(
+            { clerkId: id },
+            {
+                fullName: `${first_name || ""} ${last_name || ""}`.trim(),
+                imageUrl: image_url,
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
 
-        res.status(200).json({ success: true, message: "Successful callback" });
+        res.status(200).json({ success: true, message: "Successful callback", user });
     } catch (error) {
         console.log("error in callback controller", error.message);
         next(error);

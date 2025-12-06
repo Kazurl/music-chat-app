@@ -16,7 +16,7 @@ const MessageInput = () => {
         try {
             sendMessage(selectedUser.clerkId, user.id, message.trim());
             setMessage("");
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Failed to send message in MessageInput.tsx: ", error);
         }
     };

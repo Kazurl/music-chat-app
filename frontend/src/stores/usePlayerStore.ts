@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create, StateCreator } from "zustand";
 import { Song } from "@/types";
 import { useChatStore } from "./useChatStore";
 
@@ -16,7 +16,7 @@ interface PlayerStore {
     playPrevious: () => void;
 };
 
-export const usePlayerStore = create<PlayerStore>((set: any, get: any) => ({
+export const usePlayerStore = create<PlayerStore>((set: StateCreator<PlayerStore>['set'], get: StateCreator<PlayerStore>['get']) => ({
     currentSong: null,
     isPlaying: false,
     queue: [],

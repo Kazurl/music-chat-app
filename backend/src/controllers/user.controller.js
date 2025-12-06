@@ -40,12 +40,12 @@ export const getMessages = async (req, res, next) => {
 // send either text or image with/ without text to specified user
 export const sendMessage = async (req, res, next) => {
     try {
-        const { text, imgage } = req.body;
+        const { text, image } = req.body;
         const { id: receiverId } = req.params;
 
         const senderId = req.auth.userId;
 
-        let imageUrl;
+        let imageUrl = "";
         if (image) {
             // upload base64 image to cloudinary
             const uploadResponse = await cloudinary.uploader.upload(image);
